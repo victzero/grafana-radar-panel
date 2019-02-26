@@ -1,5 +1,5 @@
-import {RadarGraphCtrl} from './radargraph_ctrl';
+import {LineGraphCtrl} from './linegraph_ctrl';
 
 export {
-  RadarGraphCtrl as PanelCtrl
+  LineGraphCtrl as PanelCtrl
 };

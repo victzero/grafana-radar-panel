@@ -1,15 +1,15 @@
 {
   "type": "panel",
-  "name": "Radar Graph",
-  "id": "snuids-radar-panel",
+  "name": "Simple Line Graph",
+  "id": "victzero-simple-line-panel",
 
   "info": {
-    "description": "Radar Graph for grafana",
+    "description": "Simple Line Graph for grafana",
     "author": {
-      "name": "snuids",
-      "url": "https://github.com/snuids/grafana-radar-panel"
+      "name": "victzero",
+      "url": "https://github.com/victzero/grafana-radar-panel"
     },
-    "keywords": ["radar", "panel"],
+    "keywords": ["line", "panel"],
     "logos": {
       "small": "src/img/radar_logo.jpg",
       "large": "src/img/radar_logo.jpg"

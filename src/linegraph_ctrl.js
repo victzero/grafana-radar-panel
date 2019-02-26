@@ -5,13 +5,13 @@ import moment from 'moment';
 import _ from 'lodash';
 import TimeSeries from 'app/core/time_series';
 
-import './css/radargraph-panel.css!';
+import './css/linegraph-panel.css!';
 import './Chart.js'
 
 const panelDefaults = {
   bgColor: null,
 
-  radarSettings: {
+  lineSettings: {
     fontColor: 'gray',
     gridColor: 'gray',
     fontSize: 14,
@@ -23,7 +23,7 @@ const panelDefaults = {
   }
 };
 
-export class RadarGraphCtrl extends MetricsPanelCtrl {
+export class LineGraphCtrl extends MetricsPanelCtrl {
   constructor($scope, $injector, $rootScope) {
     super($scope, $injector);
     _.defaultsDeep(this.panel, panelDefaults);
@@ -45,11 +45,11 @@ export class RadarGraphCtrl extends MetricsPanelCtrl {
     this.canvasid = ("id" + (Math.random() * 100000)).replace('.', '')
 
     this.ctx = null;
-    this.radar = null;
+    this.line = null;
 
     this.currentOptions = null;
 
-    this.updateRadar();
+    this.updateLine();
   }
 
   onDataError() {
@@ -61,23 +61,23 @@ export class RadarGraphCtrl extends MetricsPanelCtrl {
     this.options = {
       legend: {
         display: true,
-        position: this.panel.radarSettings.legendType,
+        position: this.panel.lineSettings.legendType,
         labels: {
-          fontColor: this.panel.radarSettings.fontColor
+          fontColor: this.panel.lineSettings.fontColor
         }
       },
       scale: {
         angleLines: {
           lineWidth: 2,
-          color: this.panel.radarSettings.gridColor
+          color: this.panel.lineSettings.gridColor
         },
         gridLines: {
           lineWidth: 1,
-          color: this.panel.radarSettings.gridColor
+          color: this.panel.lineSettings.gridColor
         },
         pointLabels: {
-          fontSize: parseInt(this.panel.radarSettings.fontSize),
-          fontColor: this.panel.radarSettings.fontColor
+          fontSize: parseInt(this.panel.lineSettings.fontSize),
+          fontColor: this.panel.lineSettings.fontColor
         },
       }
     };
@@ -91,35 +91,35 @@ export class RadarGraphCtrl extends MetricsPanelCtrl {
         this.ctx = document.getElementById(this.canvasid).getContext('2d');
 
     if (this.ctx != null) {
-      if (this.radar == null) {
-        this.radar = new Chart(this.ctx, {
-          type: 'radar',
+      if (this.line == null) {
+        this.line = new Chart(this.ctx, {
+          type: 'line',
           data: this.data,
           options: this.options
 
         });
       } else {
         if (this.currentOptions != JSON.stringify(this.options)) {
-          console.log("Recreate radar graph.");
+          console.log("Recreate line graph.");
           this.currentOptions = JSON.stringify(this.options);
           if (this.ctx != null) {
-            if (this.radar != null) {
-              this.radar.destroy();
+            if (this.line != null) {
+              this.line.destroy();
               $("canvas#" + this.canvasid).remove();
               $("div#panel" + this.canvasid).append('<canvas id="' + this.canvasid + '"></canvas>');
               this.ctx = document.getElementById(this.canvasid).getContext('2d');
 
             }
-            this.radar = new Chart(this.ctx, {
-              type: 'radar',
+            this.line = new Chart(this.ctx, {
+              type: 'line',
               data: this.data,
               options: this.options
 
             });
           }
         }
-        this.radar.data = this.data;
-        this.radar.update();
+        this.line.data = this.data;
+        this.line.update();
       }
     }
   }
@@ -128,7 +128,7 @@ export class RadarGraphCtrl extends MetricsPanelCtrl {
     var labels = {};
     var datasets = {};
 
-    var ignoretimeinfluxdn = this.panel.radarSettings.ignoreTimeInfluxDB;
+    var ignoretimeinfluxdn = this.panel.lineSettings.ignoreTimeInfluxDB;
 
     if (ignoretimeinfluxdn) {
       //      console.log('IGNORING')
@@ -249,8 +249,8 @@ export class RadarGraphCtrl extends MetricsPanelCtrl {
 
     // loads alias
     var seriesAliasTable=[];
-    if(this.panel.radarSettings.seriesAlias!=null)
-      seriesAliasTable=this.panel.radarSettings.seriesAlias.split(";");
+    if(this.panel.lineSettings.seriesAlias!=null)
+      seriesAliasTable=this.panel.lineSettings.seriesAlias.split(";");
 
     var seriesAliasHT={}
     
@@ -401,15 +401,15 @@ export class RadarGraphCtrl extends MetricsPanelCtrl {
   }
 
   onInitEditMode() {
-    this.addEditorTab('Options', 'public/plugins/snuids-radar-panel/editor.html', 2);
+    this.addEditorTab('Options', 'public/plugins/snuids-line-panel/editor.html', 2);
   }
 
   onPanelTeardown() {
     this.$timeout.cancel(this.nextTickPromise);
   }
 
-  updateRadar() {
-    this.nextTickPromise = this.$timeout(this.updateRadar.bind(this), 1000);
+  updateLine() {
+    this.nextTickPromise = this.$timeout(this.updateLine.bind(this), 1000);
   }
 
 
@@ -440,4 +440,4 @@ export class RadarGraphCtrl extends MetricsPanelCtrl {
   }
 }
 
-RadarGraphCtrl.templateUrl = 'module.html';
+LineGraphCtrl.templateUrl = 'module.html';

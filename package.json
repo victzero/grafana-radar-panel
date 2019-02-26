@@ -1,7 +1,7 @@
 {
-  "name": "radargraph-panel",
+  "name": "linegraph-panel",
   "version": "1.4.2",
-  "description": "Radar Graph Panel Plugin for Grafana",
+  "description": "Simple Line Graph Panel Plugin for Grafana",
   "main": "src/module.js",
   "scripts": {
     "lint": "eslint --color .",
